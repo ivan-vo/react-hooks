@@ -1,23 +1,18 @@
-import { render } from '@testing-library/react';
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 
-export class Timer extends Component {
-    constructor(props) {
-        super();
-        this.state = { secondsLeft: props.duration }
-    }
+export function Timer(props){
+    const [secondsLeft, setSecondsLeft] = useState(props.duration);
 
-    componentDidMount() {
-        setInterval(() => {
-            this.setState({ secondsLeft: this.state.secondsLeft - 1 })}, 1000);
-    }
+    useEffect(() => {
+        const interval = setInterval(() => {
+            console.count(props.name);
+            setSecondsLeft(secondsLeft - 1)
+        }, 1000);
+        return () => clearInterval(interval);
+    })
 
-    render() {
-        const { name } = this.props;
-        const { secondsLeft } = this.state;
-        const time = `${Math.floor(secondsLeft / 60)}:${secondsLeft % 60}`;
-        return (
-            <div>Timer {name}: {time}</div>
-        )
-    }
+    const time = `${Math.floor(secondsLeft / 60)}:${secondsLeft % 60}`;
+    return (
+        <div>{props.name}: {time}</div>
+    )
 }

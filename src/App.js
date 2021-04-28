@@ -1,42 +1,45 @@
-import React,{ Component } from 'react';
+import React, { Component, useState } from 'react';
 import './App.css';
 import { Timer } from './Components/Timer';
+import TimerForm from './Components/TimerForm';
 
-class App extends Component {
+function App() {
 
-  constructor(){
-    super();
-    this.state = 
-    { 
-      counter: 0,
-      seconds: 0
-    };
+  const [counter, increment] = useCounter();
+  const [timers, setTimers] = useState([
+    {
+      name: 'Start test',
+      duration: 5 * 60
+    },
+    {
+      name: 'New episod of "Vikings"',
+      duration: 15 * 60
+    }
+  ])
+
+  function useCounter(start = 0) {
+    const [counter, setCounter] = useState(start);
+    return [counter, () => setCounter(counter + 1)]
+  }
+  function removeTimer() {
+    let timers_ = timers.slice();
+    timers_.shift();
+    setTimers(timers_)
   }
 
-  componentDidMount(){
-    setInterval(() => {
-      this.tick()
-    }, 1000);
-  }
-
-  tick(){
-    this.setState({seconds: this.state.seconds + 1})
-  }
-
-  render() {
-    
-    return (
-      <div>
-        <p>Counter: {this.state.counter}</p>
-        <button onClick={() => this.setState({counter: this.state.counter + 1})}>
-          Add
-        </button>
-        <p>Seconds since start: {this.state.seconds}</p>
-        <Timer name={'Go to school'} duration = {5 * 60}/>
-        <Timer name={'Go to training'} duration = {15 * 60}/>
-      </div>
-    )
-  }
+  return (
+    <div>
+      <p>Counter: {counter}</p>
+      <button onClick={increment}>++</button>
+      {
+        timers.map(
+          (timer, i) => <Timer key={i} name={timer.name} duration={timer.duration} />
+        )
+      }
+      <button onClick={removeTimer}>Remove timer</button>
+      <TimerForm />
+    </div>
+  )
 }
 
 export default App;
