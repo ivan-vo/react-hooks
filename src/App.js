@@ -1,6 +1,6 @@
-import React, { Component, useState } from 'react';
+import React, { useState } from 'react';
 import './App.css';
-import { Timer } from './Components/Timer';
+import { Timer,useTimerUp } from './Components/Timer';
 import TimerForm from './Components/TimerForm';
 
 function App() {
@@ -37,6 +37,7 @@ function App() {
         )
       }
       <button onClick={removeTimer}>Remove timer</button>
+      <p>You watch this site: {useTimerUp()}</p>
       <TimerForm />
     </div>
   )
