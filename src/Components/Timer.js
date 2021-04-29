@@ -1,33 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-export function useTimer(duration) {
+function useTimer(duration) {
     const [secondsLeft, setSecondsLeft] = useState(duration);
     const secondsRef = useRef();
     secondsRef.current = secondsLeft;
+    const sholdCountDown = !!secondsLeft;
 
     useEffect(() => {
-        if (!secondsRef.current) return;
+        if(!sholdCountDown) return;
         const interval = setInterval(() => {
             setSecondsLeft(secondsRef.current - 1)
         }, 1000);
         return () => clearInterval(interval);
-    },[!!secondsLeft])
+    },[sholdCountDown])
 
     return secondsLeft;
-}
-
-export function useTimerUp() {
-    const [seconds, setSeconds] = useState(0);
-    const secondsRef = useRef();
-    secondsRef.current = seconds;
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setSeconds(secondsRef.current + 1)
-        }, 1000);
-        return () => clearInterval(interval);
-    },[])
-    return seconds;
 }
 
 export function Timer(props){
